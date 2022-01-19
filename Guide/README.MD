@@ -13,3 +13,15 @@
 5. Klik generate
 
 6. Untuk mengubah latar, klik Ubah Latar
+
+#### Dengan Android :
+
+1. Buka Chrome untuk Android
+
+2. Buka https://simaster.ugm.ac.id/akademik/mhs_jadwal_kuliah/
+
+3. Klik titik tiga kanan atas, lalu tombol panah bawah (Download)
+
+4. Buka folder download, ada file namanya Simaster_files blablabla, rename akhirannya jadi html
+
+5. Upload, lalu generate seperti biasa
