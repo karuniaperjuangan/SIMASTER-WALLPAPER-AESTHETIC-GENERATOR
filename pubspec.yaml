@@ -43,8 +43,8 @@ dependencies:
   universal_html: ^2.0.8
 
 flutter_icons:
-  android: "launcher_icon"
-  ios: true
+  #android: "launcher_icon"
+  #ios: true
   image_path: "assets/Logo.png"
 
 dev_dependencies:

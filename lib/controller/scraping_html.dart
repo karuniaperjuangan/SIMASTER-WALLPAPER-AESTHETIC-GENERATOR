@@ -22,11 +22,11 @@ void pickHTML() async {
   List<String> data = [];
   List<Map<String, dynamic>> eventsJsonList = [];
   var decodedFile = utf8.decode(result.files.first.bytes!.toList(), allowMalformed: true).split("</html>")[0] + "</html>";
-  print(decodedFile);
+  //print(decodedFile);
   final document = parse( decodedFile);
   var rows =
       document.getElementsByTagName("table")[0].getElementsByTagName("td");
-  print(rows);
+  //print(rows);
   rows.map((e) {
     // print(e);//this is only the tag for some reason
     // print(e.innerHtml);//this the inside

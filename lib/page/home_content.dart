@@ -7,6 +7,8 @@ import 'package:simaster_wallpaper_generator_flutter/controller/image_pick.dart'
 import 'package:simaster_wallpaper_generator_flutter/controller/scraping_html.dart';
 import 'package:simaster_wallpaper_generator_flutter/page/page_template.dart';
 import 'package:simaster_wallpaper_generator_flutter/page/wallpaper_widget.dart';
+import 'package:universal_html/html.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeContent extends StatelessWidget {
   HomeContent({
@@ -44,7 +46,9 @@ class HomeContent extends StatelessWidget {
                   height: 16,
                 ),
                 InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    launch('https://github.com/karuniaperjuangan/SIMASTER-WALLPAPER-AESTHETIC-GENERATOR/tree/main/Guide');
+                  },
                     child: Text("Panduan",
                         style: TextStyle(fontSize: 18, color: kColorRose))),
               ],
