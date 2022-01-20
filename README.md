@@ -2,6 +2,8 @@
 
 Sebuah Progressive Web App (PWA) berbasis Flutter berupa aplikasi yang bisa menggenerate sebuah wallpaper dengan ratio 9:16 dengan input file HTML jadwal kuliah di Simaster.
 
+Demo dapat diakses di https://karuniaperjuangan.github.io/simasterwallpaper/#/
+
 ### Credit:
 
 1. Scraping Jadwal Simaster oleh Dwikavindra Haryo Radithya (CS'20). Dapat diakses lewat https://github.com/S0ULB0Y/SimasterHTMLParsing.
