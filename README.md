@@ -1,6 +1,6 @@
 # Aplikasi Generator Wallpaper Jadwal Kuliah Estetik dengan Flutter
 
-Sebuah Progressive Web App (PWA) berupa aplikasi yang bisa menggenerate sebuah wallpaper dengan ratio 9:16 dengan input file HTML jadwal kuliah di Simaster.
+Sebuah Progressive Web App (PWA) berbasis Flutter berupa aplikasi yang bisa menggenerate sebuah wallpaper dengan ratio 9:16 dengan input file HTML jadwal kuliah di Simaster.
 
 ### Credit:
 
