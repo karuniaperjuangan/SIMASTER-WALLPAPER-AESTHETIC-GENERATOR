@@ -17,6 +17,7 @@ class HomeContent extends StatelessWidget {
 
   var useDefaultBackground = true.obs;
   var activateGenerate = false.obs;
+  var fileName = "".obs;
   ScheduleListController scheduleListController = Get.put(ScheduleListController());
   ImageByteController imagePickController = Get.put(ImageByteController());
   @override
@@ -53,9 +54,20 @@ class HomeContent extends StatelessWidget {
                         style: TextStyle(fontSize: 18, color: kColorRose))),
               ],
             ),
-            SimasterButton(
-              label: "Upload HTML Jadwal Simaster",
-              onPressed: () {pickHTML(); activateGenerate.value = true;},
+            Container(
+              height: 100,
+              child: Column(
+                children: [
+                  SimasterButton(
+                    label: "Upload HTML Jadwal Simaster",
+                    onPressed: () async{fileName.value= await pickHTML(); activateGenerate.value = true;},
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Obx(()=> Text(fileName.value)),
+                  ),
+                ],
+              ),
             ),
             
             Obx(

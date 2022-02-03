@@ -57,7 +57,7 @@ class WallpaperPreviewContent extends StatelessWidget {
     );
   }
 
-  void download() async {
+  void download() async { //Dapet dari stackoverflow, intinya ngerender gambar ke file
     final result = await screenshotController.capture(
       pixelRatio: 4,
     );

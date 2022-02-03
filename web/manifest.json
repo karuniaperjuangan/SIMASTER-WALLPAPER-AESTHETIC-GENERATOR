@@ -1,11 +1,11 @@
 {
-    "name": "simaster_wallpaper_generator_flutter",
-    "short_name": "simaster_wallpaper_generator_flutter",
+    "name": "Simaster Aethestic Wallpaper Generator",
+    "short_name": "Simaster Wallpaper",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "A Simaster Aethestic Wallpaper Generator",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
