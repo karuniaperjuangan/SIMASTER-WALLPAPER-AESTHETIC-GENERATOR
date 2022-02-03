@@ -25,3 +25,9 @@
 4. Buka folder download, ada file namanya Simaster_files blablabla, rename akhirannya jadi html
 
 5. Upload, lalu generate seperti biasa
+
+#### Video:
+
+
+https://user-images.githubusercontent.com/71960985/151578911-6431ad0b-f4e2-401b-bcd1-139d47d14c23.mp4
+
