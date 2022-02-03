@@ -41,11 +41,11 @@ Future<String> pickHTML() async {
         .replaceAll(RegExp(r'<[^>]*>|&[^;]+;'), ' ')
         .replaceAll(RegExp('[\\s+]{2,}'), " ")
         .trim(); //remove html tags and whitesapce more than 2
-    if (pushed != "-" /* && !isgelar */ && !isInt) {
+    if (true /* && !isgelar  && !isInt*/) {
       data.add(pushed); //sini langsung add ke list beuh mantap
     }
   });
-    //print(data);
+    print(data);
   List<String> schedule_data = clean_data().get_schedule(data);
   List<String> subject_data = clean_data().get_event(data);
     //print("Nama Matkul: $subject_data");
@@ -105,7 +105,7 @@ class clean_data {
 
   List<String> get_schedule(List<String> data) {
     List<String> newdata = [];
-    for (int i = 3; i < data.length; i += 4) {
+    for (int i = 6; i < data.length; i += 7) {
       //print("schedule data being added ${data[i]}");
       newdata.add(data[i]); //adding the data to the new list
     }
@@ -114,7 +114,7 @@ class clean_data {
 
   List<String> get_event(List<String> data) {
     List<String> newdata = [];
-    for (int i = 1; i < data.length; i += 4) {
+    for (int i = 2; i < data.length; i += 7) {
       
         newdata.add(data[i]);
 
@@ -206,7 +206,6 @@ int get_start_day(String data) {
 }
 
 String get_start_time(String data) {
-  print(data);
   List<String> split_data = data.split(" ");
   List<String> unprocessed_time = split_data.lastWhere((element) => element.contains("-")).split("-");
   String start_time = unprocessed_time[0];
