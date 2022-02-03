@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Simaster Wallpaper Generator',
       theme: ThemeData(
         textTheme: TextTheme(button: TextStyle(fontFamily: 'Roboto')),
         // This is the theme of your application.
