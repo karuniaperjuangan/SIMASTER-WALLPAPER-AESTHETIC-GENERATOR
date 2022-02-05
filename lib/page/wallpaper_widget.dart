@@ -242,7 +242,7 @@ class DayWidget extends StatelessWidget {
                                           " (" +
                                           element.kelas_name +
                                           ")",
-                                          maxLines: 3,
+                                          maxLines: 4,
                                           overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                         letterSpacing: 0,
