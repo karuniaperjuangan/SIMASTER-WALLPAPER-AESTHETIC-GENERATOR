@@ -4,7 +4,7 @@
 
 1. Buka Browser kesayangan Anda
 
-2. Buka https://simaster.ugm.ac.id/akademik/mhs_jadwal_kuliah/
+2. Buka https://simaster.ugm.ac.id/akademik/mhs_jadwal_kuliah/ ( Simaster > Akademik > Jadwal Kuliah)
 
 3. Klik kanan, lalu Save As, pilih format Complete Webpage HTML
 
@@ -18,7 +18,7 @@
 
 1. Buka Chrome untuk Android
 
-2. Buka https://simaster.ugm.ac.id/akademik/mhs_jadwal_kuliah/
+2. Buka https://simaster.ugm.ac.id/akademik/mhs_jadwal_kuliah/ ( Simaster > Akademik > Jadwal Kuliah)
 
 3. Klik titik tiga kanan atas, lalu tombol panah bawah (Download)
 
