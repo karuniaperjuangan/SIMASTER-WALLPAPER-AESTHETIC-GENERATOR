@@ -22,6 +22,7 @@ class WallpaperPreviewContent extends StatelessWidget {
 
   //Create an instance of ScreenshotController
   ScreenshotController screenshotController = ScreenshotController();
+  ToggleRoomController toggleRoomController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +32,15 @@ class WallpaperPreviewContent extends StatelessWidget {
           child: Container(
               child: Transform.scale(
             scale: 0.8,
-            child: Center(
-                child: Screenshot(
-                    controller: screenshotController,
-                    child: Obx(()=> WallpaperWidget(imageProvider: imageProvider.value??AssetImage("assets/DefaultBackground.png"))))),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Center(
+                  child: Screenshot(
+                      controller: screenshotController,
+                      child: Obx(() => WallpaperWidget(
+                          imageProvider: imageProvider.value ??
+                              AssetImage("assets/DefaultBackground.png"))))),
+            ),
           )),
         ),
         SizedBox(
@@ -42,11 +48,39 @@ class WallpaperPreviewContent extends StatelessWidget {
         ),
         Container(
           constraints: BoxConstraints(maxWidth: 500),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Column(
             children: [
-              SimasterButton(label: "Ganti Latar", onPressed: () => pickImage()),
-              SimasterButton(label: "Download", onPressed: () => download()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SimasterButton(
+                      label: "Ganti Latar", onPressed: () => pickImage()),
+                  SimasterButton(
+                      label: "Download", onPressed: () => download()),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Obx(
+                  () => Switch(
+                    onChanged: (value) =>
+                        {toggleRoomController.toggleRoom.value = value},
+                    value: toggleRoomController.toggleRoom.value,
+                    activeColor: kColorRose,
+                  ),
+                ),
+                SizedBox(
+                  width: 12,
+                ),
+                Flexible(
+                  child: Text(
+                    "Tampilkan Ruangan Kelas (Jika tidak dinyalakan, ruangan kelas akan digantikan kode kelas)",
+                    softWrap: true,
+                  ),
+                )
+              ])
             ],
           ),
         ),
@@ -57,7 +91,8 @@ class WallpaperPreviewContent extends StatelessWidget {
     );
   }
 
-  void download() async { //Dapet dari stackoverflow, intinya ngerender gambar ke file
+  void download() async {
+    //Dapet dari stackoverflow, intinya ngerender gambar ke file
     final result = await screenshotController.capture(
       pixelRatio: 4,
     );
@@ -80,18 +115,19 @@ class WallpaperPreviewContent extends StatelessWidget {
     return;
   }
 
-  void pickImage() async{
-  var result = await FilePicker.platform.pickFiles(type: FileType.image);
+  void pickImage() async {
+    var result = await FilePicker.platform.pickFiles(type: FileType.image);
 
-    if(result == null) return;
-    imageProvider.value = MemoryImage(result.files.first.bytes??Uint8List(0));
+    if (result == null) return;
+    imageProvider.value = MemoryImage(result.files.first.bytes ?? Uint8List(0));
   }
-
-  
 }
 
 class WallpaperWidget extends StatelessWidget {
-  WallpaperWidget({Key? key, this.imageProvider = const AssetImage("assets/DefaultBackground.png") }) : super(key: key);
+  WallpaperWidget(
+      {Key? key,
+      this.imageProvider = const AssetImage("assets/DefaultBackground.png")})
+      : super(key: key);
 
   ImageProvider imageProvider;
 
@@ -165,15 +201,12 @@ class WallpaperWidget extends StatelessWidget {
             ));
   }
 
-
-
-  void pickImage() async{
-  ImageByteController imageByteController = Get.find();
-  var result = await FilePicker.platform.pickFiles(type: FileType.image);
+  void pickImage() async {
+    ImageByteController imageByteController = Get.find();
+    var result = await FilePicker.platform.pickFiles(type: FileType.image);
 
     imageByteController.imageByte.value = result!.files.first.bytes!.toList();
-
-}
+  }
 }
 
 class DayWidget extends StatelessWidget {
@@ -184,7 +217,7 @@ class DayWidget extends StatelessWidget {
   final int index;
 
   ScheduleListController scheduleListController = Get.find();
-
+  ToggleRoomController toggleRoomController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -217,10 +250,11 @@ class DayWidget extends StatelessWidget {
               height: 355.h,
               child: scheduleListController.weekScheduleList[index].isNotEmpty
                   ? SingleChildScrollView(
-                    child: Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: scheduleListController.weekScheduleList[index].map((element) {
+                        children: scheduleListController.weekScheduleList[index]
+                            .map((element) {
                           return Container(
                             padding: EdgeInsets.symmetric(vertical: 5.h),
                             child: Row(
@@ -229,35 +263,44 @@ class DayWidget extends StatelessWidget {
                               children: [
                                 Text(element.start_time,
                                     style: TextStyle(
-                                      letterSpacing: 0,
+                                        letterSpacing: 0,
                                         fontSize: 24.h,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.black,
                                         fontFamily: "Comfortaa")),
-                                SizedBox(width: 8.h,),
+                                SizedBox(
+                                  width: 8.h,
+                                ),
                                 SizedBox(
                                   width: 230.h,
-                                  child: Text(
-                                      element.matkul_name +
-                                          " (" +
-                                          element.kelas_name +
-                                          ")",
-                                          maxLines: 4,
-                                          overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        letterSpacing: 0,
-                                          fontSize: 22.h,
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black,
-                                          fontFamily: "KGRedHands")),
+                                  child: Obx(
+                                    () => Text(
+                                        element.matkul_name +
+                                            " (" +
+                                            (toggleRoomController
+                                                    .toggleRoom.value
+                                                ? element.first_ruang
+                                                : element.kelas_name) +
+                                            ")",
+                                        maxLines: 4,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            letterSpacing: 0,
+                                            fontSize: 22.h,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.black,
+                                            fontFamily: "KGRedHands")),
+                                  ),
                                 ),
-                                        SizedBox(height: 8.h,),
+                                SizedBox(
+                                  height: 8.h,
+                                ),
                               ],
                             ),
                           );
                         }).toList(),
                       ),
-                  )
+                    )
                   : Center(
                       child: Text(
                       "Libur :)\n\n",
@@ -288,5 +331,3 @@ class DayWidget extends StatelessWidget {
     );
   }
 }
-
-

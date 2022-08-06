@@ -15,15 +15,22 @@ Future<String> pickHTML() async {
   final html;
 
   ScheduleListController scheduleListController = Get.find();
-  var result = await FilePicker.platform
-      .pickFiles(type: FileType.custom, allowedExtensions: ['html'], allowCompression: false);
-  if (result == null) {return "";}
-  
+  var result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['html'],
+      allowCompression: false);
+  if (result == null) {
+    return "";
+  }
+
   List<String> data = [];
   List<Map<String, dynamic>> eventsJsonList = [];
-  var decodedFile = utf8.decode(result.files.first.bytes!.toList(), allowMalformed: true).split("</html>")[0] + "</html>";
+  var decodedFile = utf8
+          .decode(result.files.first.bytes!.toList(), allowMalformed: true)
+          .split("</html>")[0] +
+      "</html>";
   //print(decodedFile);
-  final document = parse( decodedFile);
+  final document = parse(decodedFile);
   var rows =
       document.getElementsByTagName("table")[0].getElementsByTagName("td");
   //print(rows);
@@ -45,31 +52,32 @@ Future<String> pickHTML() async {
       data.add(pushed); //sini langsung add ke list beuh mantap
     }
   });
-    print(data);
+  print(data);
   List<String> schedule_data = clean_data().get_schedule(data);
   List<String> subject_data = clean_data().get_event(data);
-    //print("Nama Matkul: $subject_data");
+  print("Nama Matkul: $subject_data");
 
-    //print("Schedules: $schedule_data");
-  //print(schedule_data.length);
-  //print(subject_data.length);
+  print("Schedules: $schedule_data");
+  print(schedule_data.length);
+  print(subject_data.length);
   // int day=get_start_day(schedule_data[0]);
   List<Event_Model> events =
       data_mapping().map_data(subject_data, schedule_data);
   for (var i = 0; i < events.length; i++) {
     eventsJsonList.add(events[i].toJson());
-    scheduleListController.weekScheduleList[events[i].start_day]
-        .add(events[i]);
-        print(events[i].second_day);
-    if(events[i].second_day!=7){
+    scheduleListController.weekScheduleList[events[i].start_day].add(events[i]);
+    //print(events[i].second_day);
+    if (events[i].second_day != 7) {
       Event_Model second_events = Event_Model(
-          matkul_name: events[i].matkul_name,
-          kelas_name: events[i].kelas_name,
-          start_day: events[i].second_day,
-          start_time: events[i].second_time,
-          second_day: 7,
-          second_time: "",
-          );
+        matkul_name: events[i].matkul_name,
+        kelas_name: events[i].kelas_name,
+        start_day: events[i].second_day,
+        start_time: events[i].second_time,
+        second_day: 7,
+        second_time: "",
+        first_ruang: events[i].second_ruang,
+        second_ruang: "",
+      );
       scheduleListController.weekScheduleList[events[i].second_day]
           .add(second_events);
     }
@@ -115,11 +123,10 @@ class clean_data {
   List<String> get_event(List<String> data) {
     List<String> newdata = [];
     for (int i = 2; i < data.length; i += 7) {
-      
-        newdata.add(data[i]);
+      newdata.add(data[i]);
 
       //print("schedule data being added ${data[i]}");
-       //adding the data to the new list
+      //adding the data to the new list
     }
     return newdata;
   }
@@ -137,23 +144,34 @@ class data_mapping {
     List<Event_Model> mapped_data = [];
     String matkul_name;
     String kelas_name;
+    String first_ruang = "";
+    String second_ruang = "";
     int start_day;
     String start_time;
-    int second_day=7;
-    String second_time="";
+    int second_day = 7;
+    String second_time = "";
     //String end_time;
+
     for (int i = 0; i < subject.length; i++) {
+      print(schedule[i]);
       matkul_name = get_nama_matkul(subject[i]);
       kelas_name = get_kelas(subject[i]);
-      if (schedule[i].length > 0) {
+      if (schedule[i].isNotEmpty) {
         start_day = get_start_day(schedule[i].split(" Ruang ")[0]);
         start_time = get_start_time(schedule[i].split(" Ruang ")[0]);
-        if(schedule[i].split(" Ruang ").length>2){
+        first_ruang = get_ruang(schedule[i]
+            .replaceAll(',', '')
+            .split(RegExp("Senin|Selasa|Rabu|Kamis|Jumat|Sabtu|Minggu"))[1]);
+        if (schedule[i].split(" Ruang ").length > 2) {
           second_day = get_start_day(schedule[i].split(" Ruang ")[1]);
           second_time = get_start_time(schedule[i].split(" Ruang ")[1]);
-        } else{
+          second_ruang = get_ruang(schedule[i]
+              .replaceAll(',', '')
+              .split(RegExp("Senin|Selasa|Rabu|Kamis|Jumat|Sabtu|Minggu"))[2]);
+        } else {
           second_day = 7;
           second_time = "";
+          second_ruang = "";
         }
         //end_time = get_end_time(schedule[i]);
       } else {
@@ -161,6 +179,7 @@ class data_mapping {
         start_time = "";
         second_day = 7;
         second_time = "";
+        second_ruang = "";
         //end_time = "";
       }
       Event_Model event = Event_Model(
@@ -169,8 +188,9 @@ class data_mapping {
           start_day: start_day,
           start_time: start_time,
           second_day: second_day,
-          second_time: second_time
-          );
+          second_time: second_time,
+          first_ruang: first_ruang,
+          second_ruang: second_ruang);
       mapped_data.add(event);
     }
     return mapped_data;
@@ -179,39 +199,32 @@ class data_mapping {
 
 // }
 int get_start_day(String data) {
-  if(data.contains("Senin")){
+  if (data.contains("Senin")) {
     return 0;
-  }
-  else if(data.contains("Selasa")){
+  } else if (data.contains("Selasa")) {
     return 1;
-  }
-  else if(data.contains("Rabu")){
+  } else if (data.contains("Rabu")) {
     return 2;
-  }
-  else if(data.contains("Kamis")){
+  } else if (data.contains("Kamis")) {
     return 3;
-  }
-  else if(data.contains("Jumat")){
+  } else if (data.contains("Jumat")) {
     return 4;
-  }
-  else if(data.contains("Sabtu")){
+  } else if (data.contains("Sabtu")) {
     return 5;
-  }
-  else if(data.contains("Minggu")){
+  } else if (data.contains("Minggu")) {
     return 6;
-  }
-  else{
+  } else {
     return 7;
   }
 }
 
 String get_start_time(String data) {
   List<String> split_data = data.split(" ");
-  List<String> unprocessed_time = split_data.lastWhere((element) => element.contains("-")).split("-");
+  List<String> unprocessed_time =
+      split_data.lastWhere((element) => element.contains("-")).split("-");
   String start_time = unprocessed_time[0];
   return start_time;
 }
-
 
 String get_kelas(String data) {
   List<String> split_data = data.split(" Kelas: ");
@@ -221,4 +234,10 @@ String get_kelas(String data) {
 String get_nama_matkul(String data) {
   List<String> split_data = data.split(" Kelas: ");
   return split_data[0];
+}
+
+String get_ruang(String data) {
+  List<String> split_data = data.split(RegExp("Ruang "));
+  print(split_data[1]);
+  return split_data[1];
 }

@@ -18,11 +18,12 @@ class HomeContent extends StatelessWidget {
   var useDefaultBackground = true.obs;
   var activateGenerate = false.obs;
   var fileName = "".obs;
-  ScheduleListController scheduleListController = Get.put(ScheduleListController());
+  ScheduleListController scheduleListController =
+      Get.put(ScheduleListController());
   ImageByteController imagePickController = Get.put(ImageByteController());
+  ToggleRoomController toggleRoomController = Get.put(ToggleRoomController());
   @override
   Widget build(BuildContext context) {
-    
     return SingleChildScrollView(
       child: Container(
         constraints: BoxConstraints(
@@ -47,9 +48,10 @@ class HomeContent extends StatelessWidget {
                   height: 16,
                 ),
                 InkWell(
-                  onTap: (){
-                    launch('https://github.com/karuniaperjuangan/SIMASTER-WALLPAPER-AESTHETIC-GENERATOR/tree/main/Guide');
-                  },
+                    onTap: () {
+                      launch(
+                          'https://github.com/karuniaperjuangan/SIMASTER-WALLPAPER-AESTHETIC-GENERATOR/tree/main/Guide');
+                    },
                     child: Text("Panduan",
                         style: TextStyle(fontSize: 18, color: kColorRose))),
               ],
@@ -60,22 +62,29 @@ class HomeContent extends StatelessWidget {
                 children: [
                   SimasterButton(
                     label: "Upload HTML Jadwal Simaster",
-                    onPressed: () async{fileName.value= await pickHTML(); activateGenerate.value = true;},
+                    onPressed: () async {
+                      fileName.value = await pickHTML();
+                      activateGenerate.value = true;
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Obx(()=> Text(fileName.value)),
+                    child: Obx(() => Text(fileName.value)),
                   ),
                 ],
               ),
             ),
-            
             Obx(
-              () => activateGenerate.value? SimasterButton(
-                label: "Generate",
-                onPressed: () {Get.to(()=>PageScaffold(content: WallpaperPreviewContent()));},
-                color: Colors.green[300],
-              ):Container(),
+              () => activateGenerate.value
+                  ? SimasterButton(
+                      label: "Generate",
+                      onPressed: () {
+                        Get.to(() =>
+                            PageScaffold(content: WallpaperPreviewContent()));
+                      },
+                      color: Colors.green[300],
+                    )
+                  : Container(),
             )
           ],
         ),
